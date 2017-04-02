@@ -17,7 +17,7 @@ public class StudentManagementDbHelper extends SQLiteOpenHelper {
     private static final String INT_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
 
-    private static final String SQL_CREATE_STUDENTS =
+    public static final String SQL_CREATE_STUDENTS =
             "CREATE TABLE " + StudentManagementContract.Student.TABLE_NAME + " (" +
                 StudentManagementContract.Student._ID + INT_TYPE + " PRIMARY KEY AUTOINCREMENT," +
                 StudentManagementContract.Student.COLUMN_NAME_FIRST_NAME + TEXT_TYPE + COMMA_SEP +
@@ -25,7 +25,7 @@ public class StudentManagementDbHelper extends SQLiteOpenHelper {
                 StudentManagementContract.Student.COLUMN_NAME_AGE + INT_TYPE +
             " )";
 
-    private static final String SQL_DELETE_STUDENTS =
+    public static final String SQL_DELETE_STUDENTS =
             "DROP TABLE IF EXISTS " + StudentManagementContract.Student.TABLE_NAME;
 
     public StudentManagementDbHelper(Context context) {

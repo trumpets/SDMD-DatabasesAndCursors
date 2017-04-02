@@ -53,6 +53,20 @@ public class MainActivity extends AppCompatActivity {
                 getAllStudents();
             }
         });
+
+        findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                emptyDb();
+            }
+        });
+    }
+
+    private void emptyDb() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL(dbHelper.SQL_DELETE_STUDENTS);
+        db.execSQL(dbHelper.SQL_CREATE_STUDENTS);
+        getAllStudents();
     }
 
     private void insertStudent(String firstName, String lastName, String age) {
