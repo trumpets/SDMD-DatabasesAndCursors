@@ -53,15 +53,30 @@ public class MainActivity extends AppCompatActivity {
                 getAllStudents();
             }
         });
+
+        findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                emptyDb();
+            }
+        });
+    }
+
+    private void emptyDb() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL(dbHelper.SQL_DELETE_STUDENTS);
+        db.execSQL(dbHelper.SQL_CREATE_STUDENTS);
+        getAllStudents();
     }
 
     private void insertStudent(String firstName, String lastName, String age) {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(StudentManagementContract.Student.COLUMN_NAME_FIRST_NAME, firstName);
-        values.put(StudentManagementContract.Student.COLUMN_NAME_LAST_NAME, lastName);
-        values.put(StudentManagementContract.Student.COLUMN_NAME_AGE, age);
-
+        if (!lastName.equals("")) {
+            values.put(StudentManagementContract.Student.COLUMN_NAME_FIRST_NAME, firstName);
+            values.put(StudentManagementContract.Student.COLUMN_NAME_LAST_NAME, lastName);
+            values.put(StudentManagementContract.Student.COLUMN_NAME_AGE, age);
+        }
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // Insert the new row, returning the primary key value of the new row
@@ -71,7 +86,14 @@ public class MainActivity extends AppCompatActivity {
                 null, // nullColumnHack - if the values are empty you need this
                 values); // all the data to insert
 
-        Toast.makeText(MainActivity.this, "New record inserted - ID " + newRowId, Toast.LENGTH_SHORT).show();
+        if (newRowId != -1) {
+            Toast.makeText(MainActivity.this, "New record inserted - ID " + newRowId, Toast.LENGTH_SHORT).show();
+            ((TextView) findViewById(R.id.txt_first_name)).setText("");
+            ((TextView) findViewById(R.id.txt_last_name)).setText("");
+            ((TextView) findViewById(R.id.txt_age)).setText("");
+        }
+        else
+            Toast.makeText(MainActivity.this, "You must enter at least a surname!", Toast.LENGTH_SHORT).show();
     }
 
     private void getAllStudents() {
@@ -95,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             String firstName = cursor.getString(firstNameColumn);
             String lastName = cursor.getString(lastNameColumn);
 
-            result += firstName + "\t" + lastName + "\n";
+            result += lastName + "\t" + firstName + "\n";
         }
 
         TextView resultsTextView = (TextView) findViewById(R.id.tv_results);

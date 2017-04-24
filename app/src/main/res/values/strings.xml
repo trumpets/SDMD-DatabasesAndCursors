@@ -5,4 +5,5 @@
     <string name="age">Age</string>
     <string name="insert">Insert</string>
     <string name="get_all">Get All</string>
+    <string name="delete">Delete all</string>
 </resources>
